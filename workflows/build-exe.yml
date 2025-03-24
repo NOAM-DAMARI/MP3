@@ -1,14 +1,13 @@
-
 name: Build EXE from Python Script
 
 on:
   push:
     branches:
-      - main  # תוכל לשנות את השם של הסניף
+      - main
 
 jobs:
   build:
-    runs-on: ubuntu-latest  # אתה יכול לבחור גם Windows אם תרצה
+    runs-on: ubuntu-latest  # או Windows אם תרצה
 
     steps:
       - name: Checkout code
@@ -17,19 +16,24 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: '3.9'  # תוכל לשנות לגרסה המתאימה לך
+          python-version: '3.9'
 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install pyinstaller  # התקנת PyInstaller
+          pip install -r requirements.txt
+
+      - name: Install ffmpeg
+        run: |
+          sudo apt update
+          sudo apt install -y ffmpeg
 
       - name: Build EXE
         run: |
-          pyinstaller --onefile --windowed your_script.py  # כאן שם הקובץ שלך
+          pyinstaller --onefile --windowed mp3.py
 
       - name: Upload EXE as Artifact
         uses: actions/upload-artifact@v2
         with:
-          name: my-python-app-exe
-          path: dist/your_script.exe  # המיקום של קובץ ה-EXE שנוצר
+          name: mp3-exe
+          path: dist/mp3.exe

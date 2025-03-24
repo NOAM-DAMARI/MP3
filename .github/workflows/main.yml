@@ -4,9 +4,6 @@ on:
   push:
     branches:
       - main
-  pull_request:
-    branches:
-      - main
 
 jobs:
   build:
@@ -29,12 +26,15 @@ jobs:
     - name: Install FFmpeg
       run: choco install ffmpeg
 
-    - name: Run pyinstaller to build EXE
+    - name: Install pyinstaller
+      run: pip install pyinstaller
+
+    - name: Build EXE with PyInstaller
       run: |
         pyinstaller --onefile --distpath dist --workpath build --specpath . mp3.py
 
-- name: Upload EXE as Artifact
-  uses: actions/upload-artifact@v2
-  with:
-    name: mp3-exe
-    path: dist/mp3.exe
+    - name: Upload EXE as Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: mp3-exe
+        path: dist/mp3.exe

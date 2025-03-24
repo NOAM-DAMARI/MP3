@@ -34,7 +34,7 @@ jobs:
         pyinstaller --onefile --distpath dist --workpath build --specpath . mp3.py
 
     - name: Upload EXE as Artifact
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: mp3-exe
         path: dist/mp3.exe
